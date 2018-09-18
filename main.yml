@@ -1,0 +1,6 @@
+---
+#- hosts: 192.168.56.103
+- hosts: localhost
+  gather_facts: false
+  roles:
+    - vmware

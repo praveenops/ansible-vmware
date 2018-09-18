@@ -1,0 +1,9 @@
+---
+# vars file for vmware
+
+vcenter_ip: "172.16.13.79"
+vcenter_username: "administrator@vsphere.local"
+vcenter_password: "America@123"
+datastore: datastore1
+vm_dns1: "8.8.8.8"
+vm_dns2: "8.8.8.8"

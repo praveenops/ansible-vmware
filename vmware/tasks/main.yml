@@ -1,0 +1,51 @@
+---
+- name : Getting template facts
+  vmware_vm_facts:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{vcenter_password }}"
+    vm_type: template
+    validate_certs: no
+  register: template_facts
+  tags:
+    details
+
+- debug:
+   var: template_facts.virtual_machines
+  tags:
+      details
+
+# tasks file for vmware
+- name: Spin up a virtual machine using template.
+  vmware_guest:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: False
+    datacenter: "{{ vm_datacenter }}"
+    name: "{{ vm_name }}"
+    state: poweredon
+    folder: test
+    template: Ubuntu-16-template
+    disk:
+      - size_gb: 20
+        type: thin
+        datastore: "{{ datastore }}"
+    hardware:
+      memory_mb: 512
+      num_cpus: 2
+    networks:
+    - name: VM Network
+      type: static
+      ip: 172.16.13.77
+      netmask: 255.255.255.0
+      gateway: 172.16.13.1
+    customization:
+      dns_servers:
+        - "{{ vm_dns1 }}"
+        - "{{ vm_dns1 }}"
+      dns_suffix:
+        - "{{ vm_dns1 }}"
+        - " {{vm_dns2 }}"
+      domain: demopoc.com
+      hostname: ansiblevm
